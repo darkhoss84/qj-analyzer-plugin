@@ -14,6 +14,7 @@ mvn package
 bin/elasticsearch-plugin install file://`pwd`/qj-analyzer-plugin-1.0.zip
 
 4) 분석기 세팅
+<pre><code>
 {
 
       "analysis":{
@@ -72,7 +73,7 @@ bin/elasticsearch-plugin install file://`pwd`/qj-analyzer-plugin-1.0.zip
       }
 
 }
-
+</code></pre>
 5) 옵션 설명
 mode : jaso(자동완성용 자소분해기),chosung(초성검색용 초성추출기),soudex(사운덱스 처리용 필터),typo(자판 오타교정 필터)  네가지 모드로 사용 가능하다.
 
