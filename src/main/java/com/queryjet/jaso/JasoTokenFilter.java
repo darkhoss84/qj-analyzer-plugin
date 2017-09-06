@@ -1,6 +1,6 @@
-package com.esplugin.jaso;
+package com.queryjet.jaso;
 
-import com.esplugin.TokenizerOptions;
+import com.queryjet.TokenizerOptions;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;

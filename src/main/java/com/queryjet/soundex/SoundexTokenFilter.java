@@ -1,4 +1,4 @@
-package com.esplugin.soundex;
+package com.queryjet.soundex;
 
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;

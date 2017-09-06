@@ -1,4 +1,4 @@
-package com.esplugin.jaso;
+package com.queryjet.jaso;
 
 
 public class JasoDecomposer {

@@ -1,4 +1,4 @@
-package com.esplugin;
+package com.queryjet;
 
 /**
  * Created by ggbp70 on 2017. 8. 29..

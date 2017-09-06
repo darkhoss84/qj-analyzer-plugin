@@ -1,9 +1,9 @@
-package com.esplugin;
+package com.queryjet;
 
-import com.esplugin.chosung.ChosungTokenFilter;
-import com.esplugin.jaso.JasoTokenFilter;
-import com.esplugin.soundex.SoundexTokenFilter;
-import com.esplugin.typo.TypoTokenFilter;
+import com.queryjet.chosung.ChosungTokenFilter;
+import com.queryjet.jaso.JasoTokenFilter;
+import com.queryjet.soundex.SoundexTokenFilter;
+import com.queryjet.typo.TypoTokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.env.Environment;

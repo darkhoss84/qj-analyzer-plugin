@@ -1,4 +1,4 @@
-package com.esplugin.typo;
+package com.queryjet.typo;
 
 /**
  * Created by nobaksan on 2016. 2. 1..

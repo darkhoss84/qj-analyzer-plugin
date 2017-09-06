@@ -1,4 +1,4 @@
-package com.esplugin.chosung;
+package com.queryjet.chosung;
 
 
 import org.apache.lucene.analysis.TokenFilter;

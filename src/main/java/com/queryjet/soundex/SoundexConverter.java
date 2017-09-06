@@ -1,4 +1,4 @@
-package com.esplugin.soundex;
+package com.queryjet.soundex;
 
 import java.util.HashMap;
 
