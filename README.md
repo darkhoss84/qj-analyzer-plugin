@@ -13,9 +13,10 @@ mvn package
 3) 엘라스틱서치 설치
 <pre><code>
 bin/elasticsearch-plugin install file://`pwd`/qj-analyzer-plugin-1.0.zip
-<pre><code>
-4) 분석기 세팅
 </code></pre>
+
+4) 분석기 세팅
+<pre><code>
 {
 
       "analysis":{
