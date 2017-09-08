@@ -2,6 +2,7 @@ package com.queryjet;
 
 import com.queryjet.chosung.ChosungTokenFilter;
 import com.queryjet.jaso.JasoTokenFilter;
+import com.queryjet.simplejaso.SimpleJasoTokenFilter;
 import com.queryjet.soundex.SoundexTokenFilter;
 import com.queryjet.typo.TypoTokenFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -36,6 +37,8 @@ public class QjAnalyzerTokenFilterFactory extends AbstractTokenFilterFactory {
             return new TypoTokenFilter(tokenStream);
         } else if (this.options.getMode().equals("chosung")) {
             return new ChosungTokenFilter(tokenStream);
+        } else if (this.options.getMode().equals("simple_jaso")) {
+            return new SimpleJasoTokenFilter(tokenStream,options);
         } else {
             return new JasoTokenFilter(tokenStream,options);
         }

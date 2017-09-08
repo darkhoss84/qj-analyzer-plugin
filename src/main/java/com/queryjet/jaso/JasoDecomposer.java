@@ -96,28 +96,32 @@ public class JasoDecomposer {
         int[] jasoResult = new int[3];
         int choJungCode = 0;
         int jongSungCode = 0;
-        int isHangulTest = 0;
         int uniCode = 0;
         if (mode.equals("edge")) {
             for (int i = 0; i < chars.length; i++) {
                 if (chars[i] != ' ') {
                     /*단어가 한글이면 진입*/
                     if (isHangul(chars[i])) {
+                        //코드로 분해 저장
                         jasoResult = string2Number(chars[i]);
+                        //초성 문자 임시저장
                         char chosungImsi = chosungKor[jasoResult[0]];
                         Character crChosungImsi = new Character(chosungImsi);
+                        //초성 결과 저장   preUmjul(앞선 결과값) + 분석 결과값
                         tokenResult.append(preUmjul + crChosungImsi.toString() + "★");
+
+                        // 존재 한다면? 초중코드라 함은 앞선 글자에
                         if (choJungCode != 0) {
-                            boolean multiBatchim = false;
-                            if (jongSungCode != 0) {
+                            boolean multiBatchim = false;   //다중받침 존재 여부
+                            if (jongSungCode != 0) {    // 종성 코드가 존재한다면?
                                 switch (jongSungCode) {
-                                    case 1:
-                                        if (jasoResult[0] == 9) {
+                                    case 1:             // ㄱ 의 경우
+                                        if (jasoResult[0] == 9) { //ㄹㄱ 처리
                                             choJungCode += 3;
                                             multiBatchim = true;
                                         }
                                         break;
-                                    case 4:
+                                    case 4:             // ㄴ 의 경우
                                         if (jasoResult[0] == 12) {
                                             choJungCode += 5;
                                             multiBatchim = true;
@@ -126,7 +130,7 @@ public class JasoDecomposer {
                                             multiBatchim = true;
                                         }
                                         break;
-                                    case 8:
+                                    case 8:             // ㄹ 의 경우
                                         if (jasoResult[0] == 0) {
                                             choJungCode += 9;
                                             multiBatchim = true;
@@ -150,20 +154,20 @@ public class JasoDecomposer {
                                             multiBatchim = true;
                                         }
                                         break;
-                                    case 17:
+                                    case 17:           // ㅂ 의 경우
                                         if (jasoResult[0] == 9) {
                                             choJungCode += 18;
                                             multiBatchim = true;
                                         }
                                         break;
                                 }
-                                if (multiBatchim) {
+                                if (multiBatchim) {     //다중받침이 존재한다면
                                     char addChoJungCode = (char) choJungCode;
                                     Character crAddChoJungCode = new Character(addChoJungCode);
                                     tokenResult.append(preUmjul.toString().substring(0, preUmjul.length() - 1) + crAddChoJungCode.toString() + "★");
                                 }
 
-                            } else {
+                            } else {    //종성 코드가 없다면
                                 choJungCode += batchimchosungKor[jasoResult[0]];
                                 char choJungCodeImsi = (char) choJungCode;
                                 Character crChoJungCodeImsi = new Character(choJungCodeImsi);
@@ -172,23 +176,32 @@ public class JasoDecomposer {
 
                         }
 
+                        //초성 중성 결합
                         uniCode = 44032 + jasoResult[0] * 21 * 28 + jasoResult[1] * 28 + 0;
                         Character crChoJungUniCode = new Character((char) uniCode);
+                        //초성 중성 결합 결과 저장
                         tokenResult.append(preUmjul + crChoJungUniCode.toString() + "★");
 
-                        if (jasoResult[2] != 0) {
+                        if (jasoResult[2] != 0) {  //종성이 존재한다면?
                             uniCode = 44032 + jasoResult[0] * 21 * 28 + jasoResult[1] * 28 + jasoResult[2];
                             Character crChoJungJongUniCode = new Character((char) uniCode);
+
+                            //초성 중성 종성 결합 결과 저장
                             tokenResult.append(preUmjul + crChoJungJongUniCode.toString() + "★");
 
+                            //종성이 ㄱ ㄴ ㄹ ㅂ 이라면?   초중 결합 코드를 미리 계산해 둔다.
                             if ((jasoResult[2] == 1) || (jasoResult[2] == 4) || (jasoResult[2] == 8) || (jasoResult[2] == 17)) {
+                                //예 훈의 경우   choJungCode = 후 jongSungCode= ㄴ  을 만들어 둔다
+
                                 choJungCode = 44032 + jasoResult[0] * 21 * 28 + jasoResult[1] * 28;
                                 jongSungCode = jasoResult[2];
                             } else {
+                                //그외의 경우는 0으로 리셋
                                 choJungCode = 0;
                                 jongSungCode = 0;
                             }
-                        } else {
+                        } else { //종성이 존재하지 않는다면?
+                            //후위 단어       프랑스 에서 프,플    즉 뒤에 나오는 초성과 앞에 나오는 초중성이 결합을 대비해서 choJungCode를 만들어 둔다
                             choJungCode = 44032 + jasoResult[0] * 21 * 28 + jasoResult[1] * 28;
                             jongSungCode = 0;
                         }
@@ -219,6 +232,8 @@ public class JasoDecomposer {
 //                        preUmjul.append(cr4.toString().toLowerCase());
                     }
                 } else {
+                    //choJungCode = 0;
+                    //jongSungCode = 0;
                     preUmjul.append(" ");
                 }
             }

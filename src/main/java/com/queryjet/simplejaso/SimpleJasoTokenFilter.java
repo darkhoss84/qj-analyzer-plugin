@@ -1,4 +1,4 @@
-package com.queryjet.jaso;
+package com.queryjet.simplejaso;
 
 import com.queryjet.TokenizerOptions;
 import org.apache.lucene.analysis.TokenFilter;
@@ -13,14 +13,14 @@ import java.util.Queue;
 /**
  * Created by nobaksan on 2015. 11. 18..
  */
-public class JasoTokenFilter extends TokenFilter {
+public class SimpleJasoTokenFilter extends TokenFilter {
     /* The constructor for our custom token filter just calls the TokenFilter
      * constructor; that constructor saves the token stream in a variable named
      * this.input.
      */
     private static TokenizerOptions optionsValue;
 
-    public JasoTokenFilter(TokenStream tokenStream,TokenizerOptions options) {
+    public SimpleJasoTokenFilter(TokenStream tokenStream,TokenizerOptions options) {
         super(tokenStream);
         this.charTermAttr = addAttribute(CharTermAttribute.class);
         this.posIncAttr = addAttribute(PositionIncrementAttribute.class);
@@ -63,21 +63,15 @@ public class JasoTokenFilter extends TokenFilter {
         if (!input.incrementToken()) {
             return false;
         } else {
-            JasoDecomposer jasoDecomposer = new JasoDecomposer();
+            SimpleJasoDecomposer jasoDecomposer = new SimpleJasoDecomposer();
             String currentTokenInStream = this.input.getAttribute(CharTermAttribute.class).toString().trim();
-            String decomposerTokenInStream =  jasoDecomposer.runJasoDecompose(currentTokenInStream,optionsValue.getJasoMode(), optionsValue.getJasoTypo());
-            if(decomposerTokenInStream.contains("★")){
-                String[] spl = decomposerTokenInStream.split("★");
-                for(String splData : spl){
-                    if("".equals(splData.trim())) continue;
-                    terms.add(splData.toCharArray());
-                }
-            }
-            if(decomposerTokenInStream==""){
-                decomposerTokenInStream = currentTokenInStream;
-            }
-            if(decomposerTokenInStream.equals(currentTokenInStream)){
-                return true;
+            SimpleJasoDecomposer uni = new SimpleJasoDecomposer();
+
+            String decomposerTokenInStream =  uni.getAlphabeticSeqs(currentTokenInStream,"han");
+            terms.add(decomposerTokenInStream.toCharArray());
+            if (optionsValue.getJasoTypo()) {
+                decomposerTokenInStream =  uni.getAlphabeticSeqs(currentTokenInStream,"eng");
+                terms.add(decomposerTokenInStream.toCharArray());
             }
             return true;
         }
