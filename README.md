@@ -86,12 +86,12 @@ jaso_mode : true (영문 오타 추출)
             "raw": {
             "type":  "keyword"
           },
-          "spell_edge" : {
+          "auto_edge" : {
             "type" : "text",
             "analyzer": "my-index-edge-jaso",
             "search_analyzer":"my-search-jaso"
           },
-          "spell_full" : {
+          "auto_full" : {
             "type" : "text",
             "analyzer": "my-index-full-jaso",
             "search_analyzer":"my-search-jaso"
@@ -103,8 +103,8 @@ jaso_mode : true (영문 오타 추출)
 }
 </code></pre>
 
-spell_edge  : 좌일치 단어
-spell_full  : 중간일치 단어도 포함
+auto_edge  : 좌일치 단어
+auto_full  : 중간일치 단어도 포함
 
 두 필드를 동시 검색하여 랭킹을 적용하면 좋다.
 
