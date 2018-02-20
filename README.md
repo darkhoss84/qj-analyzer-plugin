@@ -18,51 +18,80 @@ bin/elasticsearch-plugin install file://`pwd`/qj-analyzer-plugin-1.0.zip
 4) 자동완성 분석기 세팅
 <pre><code>
 {
-  "analysis":{
-    "analyzer":{
-      "my-index-edge-jaso":{
-        "type":"custom",
-        "tokenizer":"keyword",
-        "filter":["my-jaso-filter","edge_filter"]
-      },
-      "my-index-full-jaso":{
-        "type":"custom",
-        "tokenizer":"keyword",
-        "filter":["edge_reverse_filter","my-jaso-filter","edge_filter"]
-      },
-     "my-search-jaso":{
-        "type":"custom",
-        "tokenizer":"keyword",
-        "filter":["my-jaso-filter"]
-      }
-    },
-    "filter" : {
-            "my-jaso-filter" : {
-                "type" : "qj-analyzer-filter",
-                "tokenizer": "keyword",
-                "mode":"simple_jaso",
-                "jaso_typo" : true
-            },
-            "edge_filter": {
-              "type": "edge_ngram",
-              "min_gram": 1,
-              "max_gram": 10,
-              "token_chars": [
-                "letter",
-                "digit"
-              ]
-            },
-        "edge_reverse_filter": {
-              "type": "edge_ngram",
-              "min_gram": 1,
-              "max_gram": 10,
-              "side" : "back",
-              "token_chars": [
-                "letter",
-                "digit"
-              ]
+  "settings" : {
+    "index":
+    {
+      "analysis":{
+        "analyzer":{
+          "my-index-edge-jaso":{
+            "type":"custom",
+            "tokenizer":"keyword",
+            "filter":["my-jaso-filter","edge_filter"]
+          },
+          "my-index-full-jaso":{
+            "type":"custom",
+            "tokenizer":"keyword",
+            "filter":["edge_reverse_filter","my-jaso-filter","edge_filter"]
+          },
+         "my-search-jaso":{
+            "type":"custom",
+            "tokenizer":"keyword",
+            "filter":["my-jaso-filter"]
+          }
+        },
+        "filter" : {
+                "my-jaso-filter" : {
+                    "type" : "qj-analyzer-filter",
+                    "tokenizer": "keyword",
+                    "mode":"simple_jaso",
+                    "jaso_typo" : true
+                },
+                "edge_filter": {
+                  "type": "edge_ngram",
+                  "min_gram": 1,
+                  "max_gram": 10,
+                  "token_chars": [
+                    "letter",
+                    "digit"
+                  ]
+                },
+            "edge_reverse_filter": {
+                  "type": "edge_ngram",
+                  "min_gram": 1,
+                  "max_gram": 10,
+                  "side" : "back",
+                  "token_chars": [
+                    "letter",
+                    "digit"
+                  ]
+                }
             }
+      }
+    }
+  },
+  "mappings": {
+      "article" : {
+        "properties" : {
+          "title" : {
+            "type" : "text",
+            "fields": {
+                "raw": {
+                "type":  "keyword"
+              },
+              "spell_edge" : {
+                "type" : "text",
+                "analyzer": "my-index-edge-jaso",
+                "search_analyzer":"my-search-jaso"
+              },
+              "spell_full" : {
+                "type" : "text",
+                "analyzer": "my-index-full-jaso",
+                "search_analyzer":"my-search-jaso"
+              }
+            }
+          }
         }
+      }
   }
 }
 </code></pre>
@@ -71,37 +100,6 @@ bin/elasticsearch-plugin install file://`pwd`/qj-analyzer-plugin-1.0.zip
 옵션 설명
 mode : simple_jaso(자동완성용 자소분해기)
 jaso_mode : true (영문 오타 추출)
-
-
-매핑 구조 예제
-
-<pre><code>
--PUT index_name/_mappings/article
-{
-  "article" : {
-    "properties" : {
-      "title" : {
-        "type" : "text",
-        "fields": {
-            "raw": {
-            "type":  "keyword"
-          },
-          "spell_edge" : {
-            "type" : "text",
-            "analyzer": "my-index-edge-jaso",
-            "search_analyzer":"my-search-jaso"
-          },
-          "spell_full" : {
-            "type" : "text",
-            "analyzer": "my-index-full-jaso",
-            "search_analyzer":"my-search-jaso"
-          }
-        }
-      }
-    }
-  }
-}
-</code></pre>
 
 spell_edge  : 좌일치 단어
 spell_full  : 중간일치 단어도 포함
